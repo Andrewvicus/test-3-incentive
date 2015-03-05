@@ -1,0 +1,22 @@
+private List<TreeViewItemModel> MakeTree(IEnumerable<MyObject> list, TreeViewItemModel parentNode)
+        {
+            List<TreeViewItemModel> treeViewList = new List<TreeViewItemModel>();
+            var nodes = list.Where(x => parentNode == null ? x.ParentID == 0 : x.ParentID == int.Parse(parentNode.Id));
+            foreach (var node in nodes)
+            {
+                TreeViewItemModel newNode = new TreeViewItemModel();
+                newNode.Id = node.ID.ToString();
+                newNode.Text = node.Text;
+ 
+                if (parentNode == null)
+                {
+                    treeViewList.Add(newNode);
+                }
+                else
+                {
+                    parentNode.Items.Add(newNode);
+                }
+                BindTree(list, newNode);
+            }
+            return treeViewList;
+        }
